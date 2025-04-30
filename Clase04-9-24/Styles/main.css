@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    min-height: 56px;
+    box-sizing: border-box;
+    background-color: black;
+    padding: 8px 16px;
+    color: #fff;
+}
+
+.header .navbar .navbar__menu {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    text-transform: uppercase;
+}
+
+.header .navbar .navbar__menu .navbar__menu-item {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    /*padding: 10px 50px;
+    /*background-color: red;
+    background-color: blue;  */
+}
+
+.header .navbar .navbar__menu .navbar__menu-item:hover {
+    background-color: rgba(64, 68, 89, 0.6);
+}
+
+.header .navbar .navbar__menu .navbar__menu-item .navbar__menu-item-link {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}

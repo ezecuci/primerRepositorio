@@ -1,0 +1,23 @@
+* {
+    padding: 0;
+}
+h1, h3 {
+    color: blue;
+}
+
+.titulo {
+    font-size: 30px;
+}
+main {
+    color: hsl(310, 88%, 30%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#links {
+    background-color: aqua;
+}
+.gato {
+    font-family: Arial, Helvetica, sans-serif;
+    color: violet;
+}
+
