@@ -1,0 +1,19 @@
+# Ignorar archivos compilados
+*.class
+
+# Ignorar carpetas de salida de compilación
+/bin/
+/out/
+/build/
+
+# Archivos del entorno de Eclipse
+*.log
+*.tmp
+*.swp
+.settings/
+.project
+.classpath
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
