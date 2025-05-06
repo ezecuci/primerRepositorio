@@ -2,6 +2,7 @@ package dominio;
 
 public abstract class Vehiculo {
 
+	protected String idVehiculo;
 	protected int maxCiudades;
 	protected double pesoCargado;
 	protected double resistePeso;
@@ -72,6 +73,10 @@ public abstract class Vehiculo {
 
 	    return false; // No se pudo registrar porque está lleno
 	}
+	public boolean eliminarPaquete(int indicePaquete) {
+		paquetes[indicePaquete] = null;
+		return true;
+	}
 	public int getCantidadPaquetes() {
 	    return cantidadPaquetes;
 	}
@@ -83,4 +88,14 @@ public abstract class Vehiculo {
 	public double getVolumenOcupado() {
 	    return volumenOcupado;
 	}
+	public String getIdVehiculo() {
+		return idVehiculo;
+	}
+	public void setIdVehiculo(String idVehiculo) {
+		this.idVehiculo = idVehiculo;
+	}
+	public Paquete[] getPaquetes() {
+		return this.paquetes;
+	}
+
 }

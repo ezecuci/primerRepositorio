@@ -6,6 +6,7 @@ public class Paquete {
 	private double profundo;
 	private double peso;
 	private Destino destino;
+	private String idPaquete;
 	
 	public Paquete (Destino destino, double alto, double ancho, double profundo, double peso) {
 		this.alto = alto;
@@ -27,5 +28,10 @@ public class Paquete {
 		return destino;
 	}
 	
-	
+	public String getIdPaquete() {
+		return idPaquete;
+	}
+	public void setIdPaquete(String idPaquete) {
+		this.idPaquete = idPaquete;
+	}
 }
