@@ -1,84 +1,59 @@
 package dominio;
+import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Vehiculo {
 
 	protected String idVehiculo;
-	protected int maxCiudades;
+	
+	protected double volumenOcupado;
 	protected double pesoCargado;
+	
+	protected int maxCiudades;
 	protected double resistePeso;
 	protected double volumenDisponible;
-	protected double volumenOcupado;
+	
 	protected int cantidadPaquetes;
-	protected Paquete[] paquetes;
-	protected Destino[] destinos;
-	protected String [] ciudades;
-	private static final int MAX_PAQ_DEST = 10000;
+	protected List <Paquete> paquetes;
+	protected List <Destino> destinos;
+	protected List <String> ciudades;
+	
+	
 	
 	public Vehiculo(double volumenDisponible, int maxCiudades, double resistePeso) {
+		
 		this.volumenDisponible = volumenDisponible;
 		this.maxCiudades = maxCiudades;
 		this.resistePeso = resistePeso;
-		paquetes = new Paquete [MAX_PAQ_DEST];
-		cantidadPaquetes = 0;
-		pesoCargado = 0;
-		volumenOcupado = 0;
-		destinos = new Destino [MAX_PAQ_DEST];
-		this.ciudades = new String[maxCiudades];
+		this.paquetes = new ArrayList<>();
+		this.destinos = new ArrayList<>();
+		this.ciudades = new ArrayList<>();
 	}
 	
 	public abstract boolean puedeAgregarPaquete(Paquete p);
 
 	public boolean agregarPaquete(Paquete p) {
 		if (puedeAgregarPaquete(p)) {
-			paquetes [cantidadPaquetes]=p;
-			cantidadPaquetes ++;
+			paquetes.add(p);
 			volumenOcupado += p.calcularVolumen();
 			pesoCargado += p.getPeso();
-			registrarDestino(p.getDestino());
 			return true;
 		}
 		return false;
 	}
 	
-	protected void registrarDestino(Destino destino) { // 
-		for(int i = 0; i < destinos.length; i ++) {
-			if(destinos[i] != null) {
-				if(destinos[i].equals(destino)) {
-				return;
-				}
-			}else{
-				if(registrarCiudad(destino.getCiudad(), maxCiudades, ciudades)) {
-				destinos[i] = destino;
-				return;
-				}
+	public boolean eliminarPaquete(String codPaquete) {
+		
+		for(Paquete p : paquetes) {
+			if(p.getIdPaquete().equals(codPaquete)){
+				paquetes.remove(p);
+				return true;
 			}
 		}
-	}
-
-	protected boolean registrarCiudad(String ciudad, int maxCiudades, String[] ciudades) {
-	    // Verificar si la ciudad ya está registrada
-	    for (int i = 0; i < maxCiudades; i++) {
-	        if (ciudades[i] != null && ciudades[i].equals(ciudad)) {
-	            return true; // Ya existe
-	        }
-	    }
-
-	    // Buscar un lugar vacío para registrar la ciudad
-	    for (int i = 0; i < maxCiudades; i++) {
-	        if (ciudades[i] == null) {
-	            ciudades[i] = ciudad;
-	            return true;
-	        }
-	    }
-
-	    return false; // No se pudo registrar porque está lleno
-	}
-	public boolean eliminarPaquete(int indicePaquete) {
-		paquetes[indicePaquete] = null;
-		return true;
+		return false;
 	}
 	public int getCantidadPaquetes() {
-	    return cantidadPaquetes;
+	    return paquetes.size();
 	}
 
 	public double getPesoCargado() {
@@ -88,14 +63,17 @@ public abstract class Vehiculo {
 	public double getVolumenOcupado() {
 	    return volumenOcupado;
 	}
+	
 	public String getIdVehiculo() {
 		return idVehiculo;
 	}
+	
 	public void setIdVehiculo(String idVehiculo) {
 		this.idVehiculo = idVehiculo;
 	}
-	public Paquete[] getPaquetes() {
-		return this.paquetes;
+	
+	public List<Paquete> getPaquetes() {
+		return paquetes;
 	}
 
 }

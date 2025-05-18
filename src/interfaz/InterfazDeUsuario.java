@@ -3,6 +3,7 @@ package interfaz;
 import servicio.GestorDeEmpresa;
 import dominio.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InterfazDeUsuario {
@@ -45,92 +46,78 @@ public class InterfazDeUsuario {
 	}
 
 	private void eliminarPaquete() {
-		if(gestor.getCantidadVehiculos()==0) {
-			mostrarMensaje("No hay vehiculos cargados, por lo tanto, no existen paquetes");
-		}else {
 		
-			for (int i = 0; i < gestor.getCantidadVehiculos(); i++) {
-				mostrarMensaje("- Vehiculo " + gestor.getVehiculos()[i].getIdVehiculo() + " "
-					+ gestor.getVehiculos()[i].getClass().getSimpleName());
-			}
-		mostrarMensaje("Ingrese el codigo del vehiculo que contiene el paquete que desea eliminar");
-		String opcion = "#" + scanner.nextLine();
-		boolean llave = false;
-		int indice = 0;
-		do {
-				
-			for(int i = 0; i < gestor.getCantidadVehiculos(); i ++) {
-				if (opcion.equals(gestor.getVehiculos()[i].getIdVehiculo())) {
-					llave = true;
-					indice = i;
-				}
-			}
-			if (llave == false) {
-				mostrarMensaje("Codigo incorrecto, ingrese otro o ingrese 0 para volver al menu principal");
-				opcion = "#" + scanner.nextLine();
-			}
-			if (opcion.equals("#0")){
-				llave = true;
-			}
-				
-		}while ( llave == false);
-		if (opcion.equals("#0")) {
-			return;
-		}else {
-			
-			mostrarMensaje("Igrese el codigo del paquete que desea eliminar");
-			for(int i = 0; i < gestor.getVehiculos()[indice].getPaquetes().length ; i ++) {
-				if(gestor.getVehiculos()[indice].getPaquetes()[i] != null) {
-					mostrarMensaje("Paquete " + ( i + 1 ) + " " + gestor.getVehiculos()[indice].getPaquetes()[i].getIdPaquete());
-				}
-			}
-			String opcionDos;
-			boolean llaveDos = false;
-			String  idVehiculoActual = "";
-			boolean seEliminoElPaquete = false;
-			do {
-				opcionDos = "#" + scanner.nextLine();
-				for(int j = 0 ; j < gestor.getCantidadVehiculos() ; j ++) {
-					for(int i = 0; i < gestor.getVehiculos()[j].getPaquetes().length ; i ++) {
-						if(gestor.getVehiculos()[j].getPaquetes()[i] != null) {
-							if (opcionDos.equals(gestor.getVehiculos()[j].getPaquetes()[i].getIdPaquete())) {
-								llaveDos= true;
-								idVehiculoActual = gestor.getVehiculos()[j].getIdVehiculo();
-								seEliminoElPaquete = gestor.eliminarPaquete(idVehiculoActual, opcionDos);
-							}
-							if(seEliminoElPaquete == true) {
-								mostrarMensaje ("Paquete eliminado");
-								return;
-							}
-						}
-					}
-				}
-				if (llaveDos == false) {
-					mostrarMensaje("Codigo incorrecto, ingrese otro o ingrese 0 para volver al menu principal");
-					opcionDos = "#" + scanner.nextLine();
-				}
-				if (opcionDos.equals("#0")){
+		System.out.println("Ingrese el codigo del vehiculo en el cual se encuentra el paquete que desea eliminar (solo el numero, sin #)");
+		String idVehiculo = elegirVehiculo();
+		
+		for(Vehiculo v : gestor.getVehiculos()) {
+			if(v.getIdVehiculo().equals(idVehiculo)) {
+				if(v.getCantidadPaquetes() == 0) {
+					System.out.println("Aun no se cargaron paquetes en este vehiculo");
 					return;
 				}
-					
-			}while ( llaveDos == false);
-			
-			
 			}
 		}
+		
+		System.out.println("Paquetes disponibles:");
+		int contadorPaquetes = 1;
+		for(Vehiculo v : gestor.getVehiculos()) {
+			if(idVehiculo.equals(v.getIdVehiculo())) {
+				for(Paquete p : v.getPaquetes()) {
+					System.out.println("- Paquete N° " + contadorPaquetes + " - " + p.getIdPaquete());
+					contadorPaquetes ++;
+				}
+				break;
+			}
+		}
+		
+		System.out.println("Ingrese el codigo del paquete que desea eliminar (solo el codigo numerico, sin el *)");
+		
+		String codigoIngresado;
+		
+		boolean encontrado = false;
+		
+		do {
+			codigoIngresado = "*" + scanner.nextLine();
+			
+			for( Vehiculo v : gestor.getVehiculos()) {
+				if (idVehiculo.equals(v.getIdVehiculo())) {
+					for(Paquete p : v.getPaquetes()) {
+						if(codigoIngresado.equals(p.getIdPaquete())) {
+							encontrado = true;
+							break;
+						}
+					}
+				break;
+				}
+				
+			}
+			
+			if (!encontrado) {
+				System.out.println("El codigo de paquete no es correcto, intentelo de nuevo");
+			}
+				
+		}while( !encontrado);
+		
+		if(gestor.eliminarPaquete(idVehiculo, codigoIngresado)) {
+			System.out.println("El paquete fue eliminado");
+		}else {
+			System.out.println("No pudo eliminarse el paquete");
+		}
+		
 	}
 
 	private void mostrarVehiculos() {
-		if (gestor.getCantidadVehiculos() == 0) {
-			mostrarMensaje("No hay vehiculos cargados.\n");
-		}else {
 		
-			for (int i = 0; i < gestor.getCantidadVehiculos(); i++) {
-				mostrarMensaje("- Vehiculo " + gestor.getVehiculos()[i].getIdVehiculo() + " "
-						+ gestor.getVehiculos()[i].getClass().getSimpleName());
-			}
+		ArrayList <Vehiculo> vehiculos = gestor.getVehiculos();
+		int contador = 1;
+		
+		for(Vehiculo v : vehiculos) {
+			
+			System.out.println("Vehiculo N° " + contador + " - " + v.getClass().getSimpleName() + " " + v.getIdVehiculo() );
+			contador ++;
 		}
-	}
+	}		
 
 	private void cargarVehiculo() {
 		mostrarMensaje("Seleccione el tipo de vehículo:\n1. Bicicleta\n2. Auto\n3. Camión");
@@ -179,22 +166,23 @@ public class InterfazDeUsuario {
 				"indicar el ancho del paquete en metros (si no llega a un metro usar coma para escribir decimales).");
 		double ancho = scanner.nextDouble();
 		mostrarMensaje(
-				"indicar el alto del paquete en metros (si no llega a un metro usar coma para escribir decimales).");
+				"indicar el alto del paquete en metros (si no llega a un metro usar coma para escribir decimales).\n");
 		double alto = scanner.nextDouble();
 		scanner.nextLine();
 
 		Destino destino = new Destino(ciudad, calle, numero);
 		Paquete paquete = new Paquete(destino, peso, largo, ancho, alto);
 
-		if (gestor.getCantidadVehiculos() != 0) {
+		if (gestor.getVehiculos().size() != 0) {
 			
-			String opcion = elegirVehiculos();
+			mostrarMensaje("Indique el codigo del vehiculo en el que desea cargar el paquete (solo el numero sin #)\n");
+			String idVehiculo = elegirVehiculo();
 
 			
-			if (gestor.agregarPaquete(paquete, opcion)) {
+			if (gestor.agregarPaquete(paquete, idVehiculo)) {
 				mostrarMensaje("El paquete fue cargado con exito\n");
 			} else {
-				mostrarMensaje("No pudo cargarse el paquete0");
+				mostrarMensaje("No pudo cargarse el paquete\n");
 			}
 		} else {
 			mostrarMensaje("No hay vehiculos cargados.\n");
@@ -202,38 +190,26 @@ public class InterfazDeUsuario {
 
 	}
 
-	private String elegirVehiculos() {
-		String opcion;
-		if (gestor.getCantidadVehiculos() == 0) {
-			mostrarMensaje("No hay vehiculos cargados.\n");
-			return opcion = "";
-		}
-		mostrarMensaje("Indique en que vehiculo desea cargar el paquete (solo el numero sin #)");
+	private String elegirVehiculo() {
 		
-		for (int i = 0; i < gestor.getCantidadVehiculos(); i++) {
-			mostrarMensaje("- Vehiculo " + gestor.getVehiculos()[i].getIdVehiculo() + " "
-					+ gestor.getVehiculos()[i].getClass().getSimpleName());
-		}
+		mostrarVehiculos();
 		
-		opcion = "#" + scanner.nextLine();
-		boolean llave = false;
+		String codigoIngresado;
+	
+		boolean encontrado = false;
+		
 		do {
-			for(int i = 0; i < gestor.getCantidadVehiculos(); i ++) {
-				if (opcion.equals(gestor.getVehiculos()[i].getIdVehiculo())) {
-					llave = true;
-					return opcion;
-				}
-			}
-			if (llave == false) {
-				mostrarMensaje("Codigo incorrecto, ingrese otro o ingrese 0 para volver al menu principal");
-				opcion = "#" + scanner.nextLine();
-			}
-			if (opcion.equals("#0")){
-				llave = true;
-			}
+			codigoIngresado = "#" + scanner.nextLine();
 			
-		}while ( llave == false);
-		return opcion = "";
+	        encontrado = gestor.existeVehiculoConId(codigoIngresado);
+			
+			if (!encontrado) {
+				System.out.println("El codigo ingresado no corresponde a ningun vehiculo, intentelo de nuevo");
+			}
+				
+		}while( !encontrado);
+		
+		return codigoIngresado;
 	}
 	
 

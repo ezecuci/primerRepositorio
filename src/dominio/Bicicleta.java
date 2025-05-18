@@ -8,19 +8,32 @@ public class Bicicleta extends Vehiculo {
 
 	@Override
 	public boolean puedeAgregarPaquete(Paquete p) {
-		if (paquetes[0] == null) {
-			if (p.calcularVolumen() > (volumenDisponible / 2) || p.getPeso() > resistePeso) {
+		String ciudadDeDestino = null;
+		if (p.calcularVolumen() > (volumenDisponible / 2) || p.getPeso() > resistePeso || paquetes.size() > 1) {
+			
+			return false;
+		} 
+
+		if(paquetes.size()==1) {
+			
+			if ((paquetes.get(0).getPeso() + p.getPeso()) > resistePeso 
+			|| (paquetes.get(0).calcularVolumen() + p.calcularVolumen()) > volumenDisponible) {
+				
 				return false;
-			} else {
-				return true;
+			}
+			ciudadDeDestino = paquetes.get(0).getDestino().getCiudad();
+			if(!ciudadDeDestino.equals(p.getDestino().getCiudad())){
+				return false;
 			}
 		}
-		if (paquetes[0].getPeso() + p.getPeso() > resistePeso
-				|| paquetes[0].calcularVolumen() + p.calcularVolumen() > volumenDisponible
-				|| !paquetes[0].getDestino().getCiudad().equals(p.getDestino().getCiudad()) || paquetes[1] != null) {
+		
+		if(paquetes.size() >= 2) {
 			return false;
 		}
+		
 		return true;
 	}
-
+	
+	
+	
 }

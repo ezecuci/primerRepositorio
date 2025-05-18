@@ -1,5 +1,8 @@
 package dominio;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Auto extends Vehiculo {
 	
 	public Auto(){
@@ -15,70 +18,46 @@ public class Auto extends Vehiculo {
 			return false;
 		}
 		
-		for(int i = 0; i < paquetes.length ; i ++) { // si sumando el paquete pasa alguno de los limites prefijados retorna false
-			if (paquetes[i] != null) {
-				volumenTotal += paquetes[i].calcularVolumen();
-				pesoTotal += paquetes[i].getPeso();
-			}
+		if(paquetes.size() == 0) {// se pregunta si no hay paquetes guardados
+			return true;
 		}
-		if (paquetes[0] == null) {
-		    return true;
+		
+		for(Paquete a : paquetes) {
+			pesoTotal += a.getPeso();
+			volumenTotal += a.calcularVolumen();
 		}
-		if (paquetes[0] != null) {// si sumando el paquete alguno de los dos parametros se pasa devuelve false
-			if ((volumenTotal + p.calcularVolumen()) > volumenDisponible || (pesoTotal + p.getPeso()) > resistePeso) {
-				return false;	
-			}
-			
-			for(int i = 0; i < paquetes.length ; i ++ ) {
-				if (paquetes[i] != null) {
-					if(p.getDestino().getCiudad().equals(paquetes[i].getDestino().getCiudad())) {
-						return true;//si ya esta registrada la ciudad devuelve true
-					}
-				}
-			}
-			
-			String [] ciudades = new String[maxCiudades];
-		    int cantidadCiudades = 0;
-		    for (int i = 0; i < paquetes.length; i++) {
-		        if (paquetes[i] != null) {
-		            String ciudadActual = paquetes[i].getDestino().getCiudad();
-		            boolean yaRegistrada = false;
-
-		            for (int j = 0; j < cantidadCiudades; j++) {
-		                if (ciudades[j].equals(ciudadActual)) {
-		                    yaRegistrada = true;
-		                    break;
-		                }
-		            }
-
-		            if (!yaRegistrada) {
-		                if (cantidadCiudades < maxCiudades) {
-		                    ciudades[cantidadCiudades] = ciudadActual;
-		                    cantidadCiudades++;
-		                } else {
-		                    // hay 3 ciudades distintas registradas
-		                    break;
-		                }
-		            }
-		        }
-		    }
-
-		    // Verifico si la ciudad del nuevo paquete ya está entre las registradas
-		    String ciudadPaquete = p.getDestino().getCiudad();
-		    for (int i = 0; i < cantidadCiudades; i++) {
-		        if (ciudades[i].equals(ciudadPaquete)) {
-		            return true;
-		        }
-		    }
-
-		    // Si hay espacio para una nueva ciudad, también se puede cargar
-		    if (cantidadCiudades <3) {
-		    	return true;
-			}
+		
+		if((pesoTotal + p.getPeso()) > resistePeso || volumenTotal + p.calcularVolumen() > volumenDisponible ) {
+			return false;// si el peso o volument cargado mas el peso o volumen del paquete actual supera los limites devuelve false
 		}
+		
+		List <String> ciudades = new ArrayList <>();
+
+	    for (Paquete a : paquetes) {
+	        String ciudad = a.getDestino().getCiudad();
+
+	        if (!ciudades.contains(ciudad)) {
+	            if (ciudades.size() < 3) {
+	                ciudades.add(ciudad);
+	            }
+	        }
+	    }
+	    
+	    
+	    String ciudadActual = p.getDestino().getCiudad();
+	    
+	    if (ciudades.contains(ciudadActual)) {
+	    	return true;
+	    }
+	    
+	    if (ciudades.size() < 3) {
+	    	return true;
+	    }
+	    
 		return false;
-	}	
+	}    
 }
+
 
 
 

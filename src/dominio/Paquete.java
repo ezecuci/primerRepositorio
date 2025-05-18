@@ -1,6 +1,6 @@
 package dominio;
 
-public class Paquete {
+public class Paquete{
 	private double alto;
 	private double ancho;
 	private double profundo;
@@ -34,4 +34,17 @@ public class Paquete {
 	public void setIdPaquete(String idPaquete) {
 		this.idPaquete = idPaquete;
 	}
+	
+//	public boolean equals(Object o) {
+//		if( this == o) { //pregunto si el objeto actual y o apuntan a la misma direccion de memoria
+//			return true;
+//		}
+//		if( !(o instanceof Paquete)) { //pregunto si son el mismo tipo de objeto, osea Paquete
+//			return false;
+//		}
+//		Paquete p = (Paquete) o; //casteo o a tipo Paquete
+//		
+//		return this.idPaquete.equals(p.idPaquete);
+//	}	
+//	
 }
