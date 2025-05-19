@@ -134,7 +134,22 @@ class GestorDeEmpresaTest {
 		assertTrue("No se pudo cargar el tercer paquete que si iba al mismo destino que el primero" , comprobacionExtra);
 	}
 	
-	
+	@Test
+	public void queSiEliminoUnPaqueteEsePaqueteSeElimine() {
+		GestorDeEmpresa gestor = new GestorDeEmpresa();
+  		Vehiculo v = new Camion();
+		gestor.agregarVehiculo(v);
+		
+		Paquete p1 = new Paquete(new Destino("Ciudadela", "Rivadavia", 3005 ), 0.05 , 2 , 1 , 2);
+		gestor.agregarPaquete(p1 , v.getIdVehiculo());
+		
+		boolean respuesta = gestor.eliminarPaquete(v.getIdVehiculo(), p1.getIdPaquete());
+		
+		System.out.println("El paquete se elimino correctamente: " + respuesta);
+		
+		assertTrue("El paquete no se elimino y el assert devolvio false", respuesta);
+		
+	}
 	
 	
 	

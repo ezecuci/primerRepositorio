@@ -30,7 +30,7 @@ public class Paquete{
 	
 	public String getIdPaquete() {
 		return idPaquete;
-	}
+	 }
 	public void setIdPaquete(String idPaquete) {
 		this.idPaquete = idPaquete;
 	}
